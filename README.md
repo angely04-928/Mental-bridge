@@ -1,1 +1,603 @@
 # Mental-bridge
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SerenApp - Bienestar Emocional</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        :root {
+            --primary-color: #c8e6c9;
+            --secondary-color: #a5d6a7;
+            --accent-color: #81c784;
+            --text-color: #2e7d32;
+            --light-color: #e8f5e9;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --transition: all 0.3s ease;
+        }
+
+        body {
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background-image: linear-gradient(to bottom, #c8e6c9, #e8f5e9);
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 1200px;
+            height: 95vh;
+            background-color: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Encabezado */
+        header {
+            background-color: var(--secondary-color);
+            padding: 15px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            z-index: 10;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo i {
+            font-size: 24px;
+        }
+
+        .logo h1 {
+            font-weight: 700;
+            font-size: 1.8rem;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-icon {
+            background-color: var(--accent-color);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            color: white;
+        }
+
+        /* Contenido principal */
+        .main-content {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        /* Panel lateral */
+        .sidebar {
+            width: 250px;
+            background-color: var(--light-color);
+            padding: 25px 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            transition: var(--transition);
+            overflow-y: auto;
+        }
+
+        .nav-item {
+            padding: 12px 15px;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: var(--transition);
+        }
+
+        .nav-item i {
+            font-size: 20px;
+            width: 30px;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background-color: var(--accent-color);
+            color: white;
+        }
+
+        /* Contenido del panel */
+        .panel {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+            background-color: #fafafa;
+        }
+
+        .panel-section {
+            display: none;
+        }
+
+        .panel-section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--accent-color);
+            color: var(--text-color);
+            font-size: 1.8rem;
+        }
+
+        /* Login */
+        .login-container {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #a5d6a7 0%, #c8e6c9 100%);
+        }
+
+        .login-box {
+            background-color: white;
+            border-radius: 20px;
+            padding: 40px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+
+        .login-title {
+            margin-bottom: 30px;
+            color: var(--text-color);
+            font-size: 2.2rem;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--text-color);
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid var(--secondary-color);
+            border-radius: 12px;
+            font-size: 16px;
+            transition: var(--transition);
+        }
+
+        .input-group input:focus {
+            border-color: var(--accent-color);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(129, 199, 132, 0.3);
+        }
+
+        .btn {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 14px 25px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .btn:hover {
+            background-color: #66bb6a;
+            transform: translateY(-2px);
+        }
+
+        /* Herramientas */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+
+        .tool-card {
+            background-color: white;
+            border-radius: 18px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 2px solid var(--secondary-color);
+            cursor: pointer;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            border-color: var(--accent-color);
+        }
+
+        .tool-icon {
+            background-color: var(--light-color);
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 20px;
+            font-size: 28px;
+            color: var(--accent-color);
+        }
+
+        .tool-title {
+            font-size: 1.4rem;
+            margin-bottom: 12px;
+            text-align: center;
+            color: var(--text-color);
+        }
+
+        .tool-description {
+            color: #555;
+            text-align: center;
+            font-size: 0.95rem;
+            line-height: 1.5;
+        }
+
+        /* Chat */
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 500px;
+            max-height: 70vh;
+            background-color: white;
+            border-radius: 18px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 12px 18px;
+            border-radius: 18px;
+            line-height: 1.5;
+        }
+
+        .bot-message {
+            background-color: var(--light-color);
+            border-bottom-left-radius: 5px;
+            align-self: flex-start;
+        }
+
+        .user-message {
+            background-color: var(--accent-color);
+            color: white;
+            border-bottom-right-radius: 5px;
+            align-self: flex-end;
+        }
+
+        .chat-input {
+            display: flex;
+            padding: 15px;
+            background-color: var(--secondary-color);
+        }
+
+        .chat-input input {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+        }
+
+        .chat-input button {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            padding: 0 20px;
+            margin-left: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .chat-input button:hover {
+            background-color: #66bb6a;
+        }
+
+        /* Recursos */
+        .resource-card {
+            display: flex;
+            background-color: white;
+            border-radius: 18px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            margin-bottom: 25px;
+            transition: var(--transition);
+        }
+
+        .resource-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .resource-img {
+            width: 150px;
+            background-color: var(--light-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 40px;
+            color: var(--accent-color);
+        }
+
+        .resource-content {
+            flex: 1;
+            padding: 20px;
+        }
+
+        .resource-title {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: var(--text-color);
+        }
+
+        /* Juegos */
+        .games-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .game-card {
+            background-color: white;
+            border-radius: 18px;
+            padding: 25px;
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: var(--transition);
+        }
+
+        .game-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .game-icon {
+            font-size: 50px;
+            margin-bottom: 20px;
+            color: var(--accent-color);
+        }
+
+        .game-title {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+        }
+
+        .game-description {
+            margin-bottom: 20px;
+            color: #555;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 70px;
+            }
+            
+            .nav-item span {
+                display: none;
+            }
+            
+            .tools-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .app-container {
+                height: auto;
+            }
+            
+            .main-content {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Pantalla de inicio de sesión -->
+        <div class="login-container" id="login-screen">
+            <div class="login-box">
+                <h2 class="login-title">SerenApp</h2>
+                <p style="margin-bottom: 25px; color: #555;">Accede a tu espacio de bienestar emocional</p>
+                
+                <form id="login-form">
+                    <div class="input-group">
+                        <label for="username">Usuario</label>
+                        <input type="text" id="username" placeholder="Ingresa tu usuario" required>
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="password">Contraseña</label>
+                        <input type="password" id="password" placeholder="Ingresa tu contraseña" required>
+                    </div>
+                    
+                    <button type="submit" class="btn">Acceder</button>
+                    <p style="margin-top: 20px; color: #666; font-size: 0.9rem;">Cualquier usuario y contraseña son válidos para acceder</p>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Aplicación principal (oculta inicialmente) -->
+        <div id="app-main" style="display: none; height: 100%;">
+            <header>
+                <div class="logo">
+                    <i class="fas fa-leaf"></i>
+                    <h1>SerenApp</h1>
+                </div>
+                <div class="user-info">
+                    <div class="user-icon" id="user-icon">U</div>
+                    <span id="username-display">Usuario</span>
+                </div>
+            </header>
+            
+            <div class="main-content">
+                <div class="sidebar">
+                    <div class="nav-item active" data-target="dashboard">
+                        <i class="fas fa-home"></i>
+                        <span>Inicio</span>
+                    </div>
+                    <div class="nav-item" data-target="emotional-regulation">
+                        <i class="fas fa-heart"></i>
+                        <span>Regulación Emocional</span>
+                    </div>
+                    <div class="nav-item" data-target="resources">
+                        <i class="fas fa-film"></i>
+                        <span>Recursos Multimedia</span>
+                    </div>
+                    <div class="nav-item" data-target="games">
+                        <i class="fas fa-gamepad"></i>
+                        <span>Juegos Interactivos</span>
+                    </div>
+                    <div class="nav-item" data-target="chat">
+                        <i class="fas fa-comments"></i>
+                        <span>Chat de Orientación</span>
+                    </div>
+                    <div class="nav-item" id="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Cerrar Sesión</span>
+                    </div>
+                </div>
+                
+                <div class="panel">
+                    <!-- Panel de inicio -->
+                    <div class="panel-section active" id="dashboard">
+                        <h2 class="section-title">Bienvenido a SerenApp</h2>
+                        <p style="margin-bottom: 25px; font-size: 1.1rem; line-height: 1.6;">
+                            Tu espacio personal para el bienestar emocional. Aquí encontrarás herramientas para gestionar tus emociones, 
+                            recursos adaptados a tus necesidades y actividades interactivas para explorar tu mundo emocional.
+                        </p>
+                        
+                        <h3 style="margin: 30px 0 20px; color: var(--text-color);">Herramientas Disponibles</h3>
+                        
+                        <div class="tools-grid">
+                            <div class="tool-card" data-target="emotional-regulation">
+                                <div class="tool-icon">
+                                    <i class="fas fa-heart"></i>
+                                </div>
+                                <h3 class="tool-title">Regulación Emocional</h3>
+                                <p class="tool-description">Técnicas para gestionar el sueño, ansiedad, ocio y estudio de manera saludable.</p>
+                            </div>
+                            
+                            <div class="tool-card" data-target="resources">
+                                <div class="tool-icon">
+                                    <i class="fas fa-film"></i>
+                                </div>
+                                <h3 class="tool-title">Recursos Multimedia</h3>
+                                <p class="tool-description">Videos, esquemas y audios adaptados por IA a tus necesidades emocionales.</p>
+                            </div>
+                            
+                            <div class="tool-card" data-target="games">
+                                <div class="tool-icon">
+                                    <i class="fas fa-gamepad"></i>
+                                </div>
+                                <h3 class="tool-title">Juegos Interactivos</h3>
+                                <p class="tool-description">Actividades lúdicas para explorar y comprender tus emociones.</p>
+                            </div>
+                            
+                            <div class="tool-card" data-target="chat">
+                                <div class="tool-icon">
+                                    <i class="fas fa-comments"></i>
+                                </div>
+                                <h3 class="tool-title">Chat de Orientación</h3>
+                                <p class="tool-description">Asistente virtual para orientación básica en momentos de necesidad.</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Regulación Emocional -->
+                    <div class="panel-section" id="emotional-regulation">
+                        <h2 class="section-title">Regulación Emocional</h2>
+                        <p style="margin-bottom: 25px;">
+                            Selecciona el área que deseas trabajar para acceder a técnicas y recursos personalizados.
+                        </p>
+                        
+                        <div class="tools-grid">
+                            <div class="tool-card">
+                                <div class="tool-icon" style="background-color: #e1f5fe;">
+                                    <i class="fas fa-bed" style="color: #0288d1;"></i>
+                                </div>
+                                <h3 class="tool-title">Sueño</h3>
+                                <p class="tool-description">Técnicas para mejorar la calidad del sueño y establecer rutinas saludables.</p>
+                            </div>
+                            
+                            <div class="tool-card">
+                                <div class="tool-icon" style="background-color: #fbe9e7;">
+                                    <i class="fas fa-hand-holding-heart" style="color: #d84315;"></i>
+                                </div>
+                                <h3 class="tool-title">Ansiedad</h3>
+                                <p class="tool-description">Herramientas para gestionar la ansiedad y reducir el estrés.</p>
+                            </div>
+                            
+                            <div class="tool-card">
+                                <div class="tool-icon" style="background-color: #e8f5e9;">
+                                    <i class="fas fa-laugh-beam" style="color: #43a047;"></i>
+                                </div>
+                                <h3 class="tool-title">Ocio</h3>
+                                <p class="tool-description">Actividades recreativas para equilibrar tu vida y mejorar tu bienestar.</p>
+                            </div>
+                            
+                            <div class="tool-card">
+                                <div class="tool-icon" style="background-color: #fff8e1;">
+                                    <i class="fas fa-book-open" style="color: #ff8f00;"></i>
